@@ -15,7 +15,7 @@ com.laysar.Core.UnitParser
 ## التثبيت
 
 ```gradle
-implementation("com.laysar:UnitParser:1.0.0")
+implementation("io.github.laysar:UnitParser:1.0.0")
 ```
 
 ثم:
