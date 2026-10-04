@@ -34,7 +34,7 @@ android {
 
         pom {
             name = "UnitParser"
-            description = ""
+            description = "A unified and flexible utility for simplifying unit parsing and handling in a fast and clear way, suitable for direct use or as a foundation within libraries, with support for Java and XML"
             inceptionYear = "2026"
 
             url = "https://github.com/Laysar/Unit-Parser"
