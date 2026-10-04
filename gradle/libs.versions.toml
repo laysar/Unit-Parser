@@ -1,0 +1,26 @@
+[versions]
+agp = "9.1.1"
+g2-background = "1.0.0"
+appcompat = "1.8.0"
+material = "1.14.0"
+activity = "1.13.0"
+constraint-layout = "2.2.2"
+recyclerview = "1.4.0"
+viewpager2 = "1.1.0"
+annotation = "1.11.0"
+maven-publish = "0.37.0"
+
+[libraries]
+laysar-g2-background = { group = "io.github.laysar", name = "G2Background", version.ref = "g2-background" }
+androidx-AppCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-ConstraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraint-layout" }
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager2" }
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+maven-Publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
