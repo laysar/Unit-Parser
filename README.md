@@ -1,312 +1,365 @@
 [العربية](README-AR.md) • **English**
 
-Unit Parser
+# Unit Parser
 
 A lightweight Java utility for Android that parses, converts, and validates unit-based values through a unified and fast API.
 
-It is designed for direct use in applications or as a foundation within libraries. It supports Android units, print units, physical length units, percentages, and degrees, along with unit policies, input constraints, and detailed results when needed.
+It is designed for direct use in applications or as a foundation within libraries. It supports Android units, print units, physical length units, percentages, and degrees, along with **unit policies**, **input constraints**, and detailed results when needed.
 
+```text
 com.laysar.Core.UnitParser
+```
 
 ---
 
-Installation
+## Installation
 
+```gradle
 implementation("com.laysar:UnitParser:1.0.0")
+```
 
 Then:
 
+```java
 import com.laysar.Core.UnitParser;
+```
 
 ---
 
-Quick Start
+## Quick Start
 
+```java
 float Size = UnitParser.toPX(Context, "16dp");
+```
 
 More examples:
 
+```java
 float Pixels = UnitParser.toPX(Context, "20sp");
 float Ratio  = UnitParser.toPX(null, "64%");
 float Angle  = UnitParser.toPX(null, "45°");
 float Raw    = UnitParser.toPX(null, "12.5");
+```
 
-Input| Result
-"12.5"| "12.5f"
-"12px"| "12.0f"
-"64%"| "0.64f"
-"45°"| "45.0f"
-"16dp"| Converted to "px" using display density
-"20sp"| Converted to "px" using font scaling
+| Input | Result |
+| --- | ---: |
+| `12.5` | `12.5f` |
+| `12px` | `12.0f` |
+| `64%` | `0.64f` |
+| `45°` | `45.0f` |
+| `16dp` | Converted to `px` using display density |
+| `20sp` | Converted to `px` using font scaling |
 
 ---
 
-Supported Units
+# Supported Units
 
-Unit| Type| Behavior
-No suffix| "UNITLESS"| Returned unchanged
-"px"| "PIXEL"| Returned unchanged
-"dp"| "DENSITY_INDEPENDENT_PIXEL"| Converted to "px"
-"sp"| "SCALE_INDEPENDENT_PIXEL"| Converted to "px"
-"pt"| "POINT"| Converted to "px"
-"pc"| "PICA"| "1pc = 12pt"
-"in"| "INCH"| Converted to "px"
-"cm"| "CENTIMETER"| Converted to "px"
-"mm"| "MILLIMETER"| Converted to "px"
-"qmm"| "QUARTER_MILLIMETER"| "1qmm = 0.25mm"
-"%"| "PERCENT"| Divided by "100"
-"°"| "DEGREE"| Returned unchanged
+| Unit | Type | Behavior |
+| --- | --- | --- |
+| No suffix | `UNITLESS` | Returned unchanged |
+| `px` | `PIXEL` | Returned unchanged |
+| `dp` | `DENSITY_INDEPENDENT_PIXEL` | Converted to `px` |
+| `sp` | `SCALE_INDEPENDENT_PIXEL` | Converted to `px` |
+| `pt` | `POINT` | Converted to `px` |
+| `pc` | `PICA` | `1pc = 12pt` |
+| `in` | `INCH` | Converted to `px` |
+| `cm` | `CENTIMETER` | Converted to `px` |
+| `mm` | `MILLIMETER` | Converted to `px` |
+| `qmm` | `QUARTER_MILLIMETER` | `1qmm = 0.25mm` |
+| `%` | `PERCENT` | Divided by `100` |
+| `°` | `DEGREE` | Returned unchanged |
 
 Positive and negative values are supported, and results are not rounded.
 
 ---
 
-Which Method Should I Use?
+# Which Method Should I Use?
 
-Need| Method
-Value only using "Context"| "toPX(...)"
-Value only using "Resources"| "toPXFromResources(...)"
-Value + unit + success state| "toPXResult(...)"
-Detailed result using "Resources"| "toPXResultFromResources(...)"
-Unit policies and numeric constraints| "toPXWithConstraints(...)"
-Constraints + detailed result| "toPXResultWithConstraints(...)"
-Constraints using "Resources"| "toPXFromResourcesWithConstraints(...)"
-Constraints + detailed result using "Resources"| "toPXResultFromResourcesWithConstraints(...)"
+| Need | Method |
+| --- | --- |
+| Value only using `Context` | `toPX(...)` |
+| Value only using `Resources` | `toPXFromResources(...)` |
+| Value + unit + success state | `toPXResult(...)` |
+| Detailed result using `Resources` | `toPXResultFromResources(...)` |
+| Unit policies and numeric constraints | `toPXWithConstraints(...)` |
+| Constraints + detailed result | `toPXResultWithConstraints(...)` |
+| Constraints using `Resources` | `toPXFromResourcesWithConstraints(...)` |
+| Constraints + detailed result using `Resources` | `toPXResultFromResourcesWithConstraints(...)` |
 
 ---
 
-Using "Resources"
+# Using `Resources`
 
-If you already have a "Resources" instance, you do not need to extract a "Context".
+If you already have a `Resources` instance, you do not need to extract a `Context`.
 
+```java
 float Size = UnitParser.toPXFromResources(
-Resources,
-"16dp"
+        Resources,
+        "16dp"
 );
+```
 
 The same policy and constraint features are available:
 
+```java
 UnitParser.toPXFromResources(Resources, RawValue);
 UnitParser.toPXFromResources(Resources, RawValue, Policy);
 UnitParser.toPXFromResources(Resources, RawValue, FirstPolicy, SecondPolicy);
 UnitParser.toPXFromResourcesWithConstraints(Resources, RawValue, Constraints);
+```
 
-These values do not require "Context" or "Resources":
+These values do not require `Context` or `Resources`:
 
+```text
 unitless
 px
 %
 °
+```
 
 For example:
 
+```java
 float Ratio = UnitParser.toPX(null, "64%");   // 0.64f
 float Angle = UnitParser.toPX(null, "45°");   // 45.0f
+```
 
 ---
 
-Detailed Results with "UnitResult"
+# Detailed Results with `UnitResult`
 
-Use "UnitResult" when the numeric value alone is not enough.
+Use `UnitResult` when the numeric value alone is not enough.
 
+```java
 UnitParser.UnitResult Result =
-UnitParser.toPXResult(Context, "16dp");
+        UnitParser.toPXResult(Context, "16dp");
 
 if (Result.isValid()) {
-float Value = Result.getValue();
-int Unit = Result.getUnitType();
+    float Value = Result.getValue();
+    int Unit = Result.getUnitType();
 }
+```
 
-Method| Meaning
-"getValue()"| Resulting value
-"getUnitType()"| Original input unit
-"isValid()"| Whether the operation succeeded
-"isUnitResolved()"| Whether a supported unit was identified
+| Method | Meaning |
+| --- | --- |
+| `getValue()` | Resulting value |
+| `getUnitType()` | Original input unit |
+| `isValid()` | Whether the operation succeeded |
+| `isUnitResolved()` | Whether a supported unit was identified |
 
-Why is the detailed result useful?
+## Why is the detailed result useful?
 
-Because "0.0f" is not always an error.
+Because `0.0f` is not always an error.
 
+```text
 0% → Value = 0.0f, Valid = true
+```
 
 An invalid input may instead produce:
 
+```text
 Value = 0.0f, Valid = false
+```
 
-Use "UnitResult" whenever you need to distinguish between these cases.
+Use `UnitResult` whenever you need to distinguish between these cases.
 
 ---
 
-Unit Policies
+# Unit Policies
 
 Each use can restrict which supported units are accepted instead of always accepting every unit.
 
-Allow Specific Units
+## Allow Specific Units
 
+```java
 UnitParser.UnitPolicy Policy =
-UnitParser.fromAllowedUnits(
-UnitParser.ANDROID_UNITS
-);
+        UnitParser.fromAllowedUnits(
+                UnitParser.ANDROID_UNITS
+        );
 
 float Value = UnitParser.toPX(
-Context,
-"16dp",
-Policy
+        Context,
+        "16dp",
+        Policy
 );
+```
 
-"ANDROID_UNITS" allows:
+`ANDROID_UNITS` allows:
 
+```text
 px
 dp
 sp
+```
 
 Every other supported unit is rejected.
 
 ---
 
-Reject Specific Units
+## Reject Specific Units
 
+```java
 UnitParser.UnitPolicy Policy =
-UnitParser.fromRejectedUnits(
-UnitParser.UnitType.PERCENT
-);
+        UnitParser.fromRejectedUnits(
+                UnitParser.UnitType.PERCENT
+        );
+```
 
-This policy allows every supported unit except "%".
+This policy allows every supported unit except `%`.
 
 ---
 
-Combine Groups and Individual Units
+## Combine Groups and Individual Units
 
+```java
 UnitParser.UnitPolicy Policy =
-UnitParser.fromAllowedUnits(
-UnitParser.ANDROID_UNITS,
-UnitParser.PRINT_UNITS,
-UnitParser.UnitType.PERCENT
-);
+        UnitParser.fromAllowedUnits(
+                UnitParser.ANDROID_UNITS,
+                UnitParser.PRINT_UNITS,
+                UnitParser.UnitType.PERCENT
+        );
+```
 
 Allowed units:
 
+```text
 px
 dp
 sp
 pt
 pc
 %
+```
 
 ---
 
-Built-in Unit Groups
+# Built-in Unit Groups
 
-Group| Units
-"RAW_VALUE_ONLY"| Unitless values only
-"ALL_UNITS"| All supported units
-"ANDROID_UNITS"| "px", "dp", "sp"
-"PRINT_UNITS"| "pt", "pc"
-"PHYSICAL_LENGTH_UNITS"| "in", "cm", "mm", "qmm"
+| Group | Units |
+| --- | --- |
+| `RAW_VALUE_ONLY` | Unitless values only |
+| `ALL_UNITS` | All supported units |
+| `ANDROID_UNITS` | `px`, `dp`, `sp` |
+| `PRINT_UNITS` | `pt`, `pc` |
+| `PHYSICAL_LENGTH_UNITS` | `in`, `cm`, `mm`, `qmm` |
 
 Individual units can also be selected directly:
 
+```java
 UnitParser.UnitType.PERCENT
 UnitParser.UnitType.DEGREE
 UnitParser.UnitType.PIXEL
+```
 
 ---
 
-Using Two Policies
+# Using Two Policies
 
 Two policies can be applied to the same call.
 
+```java
 UnitParser.UnitPolicy AndroidOnly =
-UnitParser.fromAllowedUnits(
-UnitParser.ANDROID_UNITS
-);
+        UnitParser.fromAllowedUnits(
+                UnitParser.ANDROID_UNITS
+        );
 
 UnitParser.UnitPolicy RejectPX =
-UnitParser.fromRejectedUnits(
-UnitParser.UnitType.PIXEL
-);
+        UnitParser.fromRejectedUnits(
+                UnitParser.UnitType.PIXEL
+        );
 
 float Value = UnitParser.toPX(
-Context,
-"16dp",
-AndroidOnly,
-RejectPX
+        Context,
+        "16dp",
+        AndroidOnly,
+        RejectPX
 );
+```
 
-Unit| Result
-"dp"| Allowed
-"sp"| Allowed
-"px"| Rejected
-"mm"| Rejected
+| Unit | Result |
+| --- | --- |
+| `dp` | Allowed |
+| `sp` | Allowed |
+| `px` | Rejected |
+| `mm` | Rejected |
 
-A unit must be allowed by both policies.
+A unit must be allowed by **both policies**.
 
 ---
 
-Input Constraints
+# Input Constraints
 
-"InputConstraints" can define general numeric limits or custom limits for specific units.
+`InputConstraints` can define general numeric limits or custom limits for specific units.
 
+```java
 UnitParser.InputConstraints Constraints =
-new UnitParser.InputConstraints.Builder()
-.setGeneralRange(0.0f, 1000.0f)
-.setUnitRange(
-UnitParser.UnitType.PERCENT,
-0.0f,
-100.0f
-)
-.setUnitRange(
-UnitParser.UnitType.DEGREE,
--360.0f,
-360.0f
-)
-.setUnitMaximum(
-UnitParser.UnitType.DENSITY_INDEPENDENT_PIXEL,
-600.0f
-)
-.toConstraints();
+        new UnitParser.InputConstraints.Builder()
+                .setGeneralRange(0.0f, 1000.0f)
+                .setUnitRange(
+                        UnitParser.UnitType.PERCENT,
+                        0.0f,
+                        100.0f
+                )
+                .setUnitRange(
+                        UnitParser.UnitType.DEGREE,
+                        -360.0f,
+                        360.0f
+                )
+                .setUnitMaximum(
+                        UnitParser.UnitType.DENSITY_INDEPENDENT_PIXEL,
+                        600.0f
+                )
+                .toConstraints();
+```
 
 Then:
 
+```java
 float Value = UnitParser.toPXWithConstraints(
-Context,
-"500dp",
-Constraints
+        Context,
+        "500dp",
+        Constraints
 );
+```
 
 ---
 
-How Are Constraints Applied?
+## How Are Constraints Applied?
 
-Constraints are evaluated against the numeric portion of the original input before conversion.
+Constraints are evaluated against the **numeric portion of the original input before conversion**.
 
-Input| Value Checked
-"64%"| "64"
-"16dp"| "16"
-"4qmm"| "4"
-"45°"| "45"
+| Input | Value Checked |
+| --- | ---: |
+| `64%` | `64` |
+| `16dp` | `16` |
+| `4qmm` | `4` |
+| `45°` | `45` |
 
-For example, if the "%" range is:
+For example, if the `%` range is:
 
+```text
 0 .. 100
+```
 
 the result is:
 
-Input| Status
-"0%"| Allowed
-"64%"| Allowed
-"100%"| Allowed
-"120%"| Rejected
-"-1%"| Rejected
+| Input | Status |
+| --- | --- |
+| `0%` | Allowed |
+| `64%` | Allowed |
+| `100%` | Allowed |
+| `120%` | Rejected |
+| `-1%` | Rejected |
 
 Out-of-range values are rejected. They are not automatically clamped or modified.
 
 ---
 
-"InputConstraints.Builder" API
+# `InputConstraints.Builder` API
 
-General Limits
+## General Limits
 
+```java
 setGeneralMinimum(...)
 setGeneralMaximum(...)
 setGeneralRange(...)
@@ -314,71 +367,84 @@ setGeneralRange(...)
 unsetGeneralMinimum()
 unsetGeneralMaximum()
 unsetGeneralRange()
+```
 
-Unit-Specific Limits
+## Unit-Specific Limits
 
+```java
 setUnitMinimum(...)
 setUnitMaximum(...)
 setUnitRange(...)
 
-unsetUnitMinimum(...)
+unsetUnitMinimum()
 unsetUnitMaximum()
 unsetUnitRange(...)
+```
 
-Policies
+## Policies
 
+```java
 setFirstUnitPolicy(...)
 setSecondUnitPolicy(...)
+```
 
 Create the final constraints with:
 
+```java
 toConstraints()
+```
 
 ---
 
-Combining Policies with Constraints
+# Combining Policies with Constraints
 
-Both unit policies can be stored directly inside "InputConstraints".
+Both unit policies can be stored directly inside `InputConstraints`.
 
+```java
 UnitParser.InputConstraints Constraints =
-new UnitParser.InputConstraints.Builder()
-.setFirstUnitPolicy(
-UnitParser.fromAllowedUnits(
-UnitParser.ANDROID_UNITS
-)
-)
-.setSecondUnitPolicy(
-UnitParser.fromRejectedUnits(
-UnitParser.UnitType.PIXEL
-)
-)
-.setGeneralRange(0.0f, 1000.0f)
-.toConstraints();
+        new UnitParser.InputConstraints.Builder()
+                .setFirstUnitPolicy(
+                        UnitParser.fromAllowedUnits(
+                                UnitParser.ANDROID_UNITS
+                        )
+                )
+                .setSecondUnitPolicy(
+                        UnitParser.fromRejectedUnits(
+                                UnitParser.UnitType.PIXEL
+                        )
+                )
+                .setGeneralRange(0.0f, 1000.0f)
+                .toConstraints();
+```
 
 In this example:
 
-Unit| Status
-"dp"| Allowed
-"sp"| Allowed
-"px"| Rejected
-Units outside "ANDROID_UNITS"| Rejected
+| Unit | Status |
+| --- | --- |
+| `dp` | Allowed |
+| `sp` | Allowed |
+| `px` | Rejected |
+| Units outside `ANDROID_UNITS` | Rejected |
 
 ---
 
-Strict Input Parsing
+# Strict Input Parsing
 
 The parser does not try to guess ambiguous input.
 
-Accepted
+### Accepted
 
+```text
 16dp
 -20sp
 .5%
 10.
 45°
+```
 
-Rejected
+### Rejected
 
+```text
 10 dp
 1e3dp
 1_000dp
@@ -388,84 +454,89 @@ Rejected
 10%px
 NaNpx
 Infinitypx
+```
 
 ---
 
-Error Handling
+# Error Handling
 
 Parsing and validation failures are designed not to crash the application.
 
 When an error occurs:
 
-1. A clear message is written to Logcat using the "UnitParser" tag.
-2. Value-returning methods return "0.0f".
-3. Methods returning "UnitResult" return an invalid result.
+1. A clear message is written to Logcat using the `UnitParser` tag.
+2. Value-returning methods return `0.0f`.
+3. Methods returning `UnitResult` return an invalid result.
 
-If "0.0f" can also be a valid value in your logic, use:
+If `0.0f` can also be a valid value in your logic, use:
 
+```java
 toPXResult(...)
+```
 
 instead of relying on the numeric value alone.
 
 ---
 
-Quick Notes
+# Quick Notes
 
 - No automatic rounding.
 - No clamping.
-- "%" is normalized: "64% → 0.64f".
-- "°" remains an angle value.
-- "qmm" means quarter millimeter.
+- `%` is normalized: `64% → 0.64f`.
+- `°` remains an angle value.
+- `qmm` means quarter millimeter.
 - Unit policies are evaluated before numeric constraints.
 - Numeric constraints are evaluated before conversion.
-- Values that do not require display metrics work without "Context" or "Resources".
-- Both "Context" and "Resources" APIs are available.
+- Values that do not require display metrics work without `Context` or `Resources`.
+- Both `Context` and `Resources` APIs are available.
 
 ---
 
-Complete Example
+# Complete Example
 
+```java
 UnitParser.UnitPolicy Allowed =
-UnitParser.fromAllowedUnits(
-UnitParser.ANDROID_UNITS,
-UnitParser.UnitType.PERCENT
-);
+        UnitParser.fromAllowedUnits(
+                UnitParser.ANDROID_UNITS,
+                UnitParser.UnitType.PERCENT
+        );
 
 UnitParser.UnitPolicy Rejected =
-UnitParser.fromRejectedUnits(
-UnitParser.UnitType.PIXEL
-);
+        UnitParser.fromRejectedUnits(
+                UnitParser.UnitType.PIXEL
+        );
 
 UnitParser.InputConstraints Constraints =
-new UnitParser.InputConstraints.Builder()
-.setFirstUnitPolicy(Allowed)
-.setSecondUnitPolicy(Rejected)
-.setGeneralRange(0.0f, 1000.0f)
-.setUnitRange(
-UnitParser.UnitType.PERCENT,
-0.0f,
-100.0f
-)
-.setUnitMaximum(
-UnitParser.UnitType.DENSITY_INDEPENDENT_PIXEL,
-600.0f
-)
-.toConstraints();
+        new UnitParser.InputConstraints.Builder()
+                .setFirstUnitPolicy(Allowed)
+                .setSecondUnitPolicy(Rejected)
+                .setGeneralRange(0.0f, 1000.0f)
+                .setUnitRange(
+                        UnitParser.UnitType.PERCENT,
+                        0.0f,
+                        100.0f
+                )
+                .setUnitMaximum(
+                        UnitParser.UnitType.DENSITY_INDEPENDENT_PIXEL,
+                        600.0f
+                )
+                .toConstraints();
 
 UnitParser.UnitResult Result =
-UnitParser.toPXResultWithConstraints(
-Context,
-"16dp",
-Constraints
-);
+        UnitParser.toPXResultWithConstraints(
+                Context,
+                "16dp",
+                Constraints
+        );
 
 if (Result.isValid()) {
-float Pixels = Result.getValue();
+    float Pixels = Result.getValue();
 }
+```
 
 ---
 
-Requirements
+## Requirements
 
 - Android
 - Java 8+
