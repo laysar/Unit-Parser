@@ -1,6 +1,6 @@
-تقاعدت مكتبة محلّل الوحدات، ولم تعد قيد الصيانة، إلا أنها على درجة عالية جدًا من الاستقرار، مما يتيح للمشاريع الحالية مواصلة الاعتماد عليها لسنوات طويلة، بل إلى أجل غير مسمّى تقريبًا، ما دامت بيئة تشغيلها متوافقة معها
+[UnitParser](https://github.com/laysar/Unit-Parser) has been retired and is no longer maintained. However, it remains exceptionally stable, allowing existing projects to continue relying on it for years to come, virtually indefinitely, as long as their runtime environments remain compatible
 
-انتقل التطوير إلى مكتبة وحدات، التي ستصدر قريبًا جدًا، ويمكنك متابعة مستجدات تطويرها عبر تيليجرام 
+Development has moved to [Wahdat](https://github.com/laysar/Wahdat), which is coming very soon! You can follow its development updates on [Telegram](https://t.me/LaysarSiXTeeN)
 
 [العربية](README-AR.md) • **English**
 
